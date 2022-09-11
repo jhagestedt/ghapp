@@ -1,0 +1,96 @@
+name: ci
+
+on:
+  push:
+    branches: [ main ]
+  release:
+    types: [ published ]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  version:
+    name: version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.emit.outputs.version }}
+    steps:
+      - id: checkout
+        name: checkout
+        uses: actions/checkout@v3
+      - id: emit
+        name: emit
+        run: |
+          echo "emitting version..."
+          [[ ${GITHUB_REF_TYPE} == "branch" ]] && {
+            LATEST=$(cat .version)
+            SHA=$(git rev-parse --short "${GITHUB_SHA}")
+            VERSION="${LATEST}-next-${SHA}"
+          }
+          [[ ${GITHUB_REF_TYPE} == "tag" ]] && {
+            VERSION="${GITHUB_REF_NAME}"
+          }
+          echo "emitted version ${VERSION}"
+          echo "::set-output name=version::${VERSION}"
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    needs: [ version ]
+    env:
+      DOCKER_REGISTRY_HOST: docker.io
+      DOCKER_REGISTRY_PATH: jhagestedt/ghapp
+      DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+      DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+      VERSION: ${{ needs.version.outputs.version }}
+    steps:
+      - id: checkout
+        name: checkout
+        uses: actions/checkout@v3
+      - id: setup-go
+        name: setup-go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19
+      - id: go-build
+        name: go-build
+        run: |
+          OSS=(linux darwin)
+          ARCHS=(amd64 arm64)
+          go get
+          for OS in "${OSS[@]}"; do
+            for ARCH in "${ARCHS[@]}"; do
+              env GOOS="${OS}" GOARCH="${ARCH}" \
+              go build \
+              -o "./dist/ghapp_${OS}_${ARCH}" \
+              -ldflags "-X main.version=${VERSION}"
+            done
+          done
+      - id: go-assets
+        name: go-assets
+        if: ${{ github.ref_type == 'tag' }}
+        run: |
+          for ASSET in ./dist/*; do
+            gh release upload "${VERSION}" "${ASSET}"
+          done
+      - id: docker-login
+        name: docker-login
+        run: |
+          echo "${DOCKER_REGISTRY_PASSWORD}" | \
+          docker login "${DOCKER_REGISTRY_HOST}" \
+          --username "${DOCKER_REGISTRY_USERNAME}" \
+          --password-stdin
+      - id: docker-build
+        name: docker-build
+        run: |
+          docker buildx build . \
+          --push \
+          --tag "${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_PATH}:${VERSION}"
+      - id: docker-build-latest
+        name: docker-build-latest
+        if: ${{ github.ref_type == 'tag' }}
+        run: |
+          docker buildx build . \
+          --push \
+          --tag "${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_PATH}:latest"

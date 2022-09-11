@@ -1,0 +1,40 @@
+name: ci-pull-request
+
+on:
+  pull_request:
+    branches: [ main ]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - id: checkout
+        name: checkout
+        uses: actions/checkout@v3
+      - id: setup-go
+        name: setup-go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19
+      - id: go-build
+        name: go-build
+        run: |
+          OSS=(linux darwin)
+          ARCHS=(amd64 arm64)
+          go get
+          for OS in "${OSS[@]}"; do
+            for ARCH in "${ARCHS[@]}"; do
+              env GOOS="${OS}" GOARCH="${ARCH}" \
+              go build -o "./dist/ghapp_${OS}_${ARCH}"
+            done
+          done
+      - id: docker-build
+        name: docker-build
+        run: |
+          docker buildx build . \
+          --platform=linux/amd64,linux/arm64
