@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/jhagestedt/ghapp/compare/1.0.0...1.0.1) (2022-09-11)
+
+
+### Bug Fixes
+
+* **ci:** publish assets via PAT ([f85154f](https://github.com/jhagestedt/ghapp/commit/f85154f8a080227ef1e9d5bd7834b54be437d8af))
+
 # 1.0.0 (2022-09-11)
 
 
