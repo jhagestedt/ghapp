@@ -74,6 +74,8 @@ jobs:
           for ASSET in ./dist/*; do
             gh release upload "${VERSION}" "${ASSET}"
           done
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
       - id: docker-login
         name: docker-login
         run: |
