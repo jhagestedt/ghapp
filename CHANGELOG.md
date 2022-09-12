@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/jhagestedt/ghapp/compare/1.1.1...1.1.2) (2022-09-12)
+
+
+### Bug Fixes
+
+* **ci:** build with CGOENABLED=0 for alpine linux support ([#3](https://github.com/jhagestedt/ghapp/issues/3)) ([c7b88d8](https://github.com/jhagestedt/ghapp/commit/c7b88d86e5191325a83d1a10fae441318bb8acf9))
+
 ## [1.1.1](https://github.com/jhagestedt/ghapp/compare/1.1.0...1.1.1) (2022-09-12)
 
 
