@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/jhagestedt/ghapp/compare/1.0.1...1.1.0) (2022-09-12)
+
+
+### Features
+
+* **cli:** add option to use private key via env var and also via file ([#1](https://github.com/jhagestedt/ghapp/issues/1)) ([ce2a0bf](https://github.com/jhagestedt/ghapp/commit/ce2a0bfa75a100b69bbc3869f14e27f4faa93823))
+
 ## [1.0.1](https://github.com/jhagestedt/ghapp/compare/1.0.0...1.0.1) (2022-09-11)
 
 
