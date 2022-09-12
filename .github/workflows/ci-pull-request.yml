@@ -33,6 +33,12 @@ jobs:
               go build -o "./dist/ghapp_${OS}_${ARCH}"
             done
           done
+      - id: docker-setup
+        name: docker-setup
+        run: |
+          docker buildx create \
+          --use \
+          --platform linux/amd64,linux/arm64
       - id: docker-build
         name: docker-build
         run: |
