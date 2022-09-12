@@ -62,5 +62,5 @@ There is also a docker container published at [Dockerhub](https://hub.docker.com
 
 ```bash
 export GHAPP_PRIVATE_KEY=$(cat .ghapp-private-key.pem)
-docker run --rm -e GHAPP_PRIVATE_KEY jhagestedt/ghapp token --id 123 --installation-id 123456
+docker run --rm -e GHAPP_PRIVATE_KEY jhagestedt/ghapp token --id 123 --install-id 123456
 ```
