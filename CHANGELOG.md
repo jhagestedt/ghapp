@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/jhagestedt/ghapp/compare/1.1.0...1.1.1) (2022-09-12)
+
+
+### Bug Fixes
+
+* **docker:** remove default values for target os and arch arguments ([#2](https://github.com/jhagestedt/ghapp/issues/2)) ([4ae7448](https://github.com/jhagestedt/ghapp/commit/4ae7448ff64802d3bd80140f6667cecafdee0b75))
+
 # [1.1.0](https://github.com/jhagestedt/ghapp/compare/1.0.1...1.1.0) (2022-09-12)
 
 
