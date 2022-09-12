@@ -11,8 +11,8 @@ import (
 )
 
 var client = resty.New()
-var privateKeyPrefix = "-----BEGIN RSA PRIVATE KEY-----\n"
-var privateKeySuffix = "-----END RSA PRIVATE KEY-----\n"
+var privateKeyPrefix = "-----BEGIN RSA PRIVATE KEY-----"
+var privateKeySuffix = "-----END RSA PRIVATE KEY-----"
 
 type GitHubError struct {
 	Message string `json:"message"`
@@ -26,7 +26,7 @@ func CreateToken(id string, privateKey string) (string, error) {
 	if !strings.HasPrefix(privateKey, privateKeyPrefix) {
 		return "", fmt.Errorf("private-key should have prefix %s", privateKeyPrefix)
 	}
-	if !strings.HasSuffix(privateKey, privateKeySuffix) {
+	if !strings.HasSuffix(strings.TrimSuffix(privateKey, "\n"), privateKeySuffix) {
 		return "", fmt.Errorf("private-key should have suffix %s", privateKeySuffix)
 	}
 	dec, _ := pem.Decode([]byte(privateKey))
@@ -42,7 +42,7 @@ func CreateToken(id string, privateKey string) (string, error) {
 	return token.SignedString(rsa)
 }
 
-func CreateInstallationToken(installationId string, token string) (string, error) {
+func CreateInstallationToken(installId string, token string) (string, error) {
 	gitHubInstallationToken := &GitHubInstallationToken{}
 	gitHubError := &GitHubError{}
 	res, err := client.R().
@@ -52,9 +52,9 @@ func CreateInstallationToken(installationId string, token string) (string, error
 		SetResult(&gitHubInstallationToken).
 		SetError(&gitHubError).
 		SetPathParams(map[string]string{
-			"installationId": installationId,
+			"installId": installId,
 		}).
-		Post("https://api.github.com/app/installations/{installationId}/access_tokens")
+		Post("https://api.github.com/app/installations/{installId}/access_tokens")
 	if err != nil {
 		return "", err
 	}

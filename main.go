@@ -28,39 +28,55 @@ func main() {
 		Commands: []*cli.Command{
 			{
 				Name:    "token",
-				Usage:   "Create a GitHub app installation token",
+				Usage:   "Create a GitHub App installation token",
 				Aliases: []string{"t"},
 				Flags: []cli.Flag{
 					&cli.StringFlag{
 						Name:     "id",
-						Usage:    "GitHub app id",
-						EnvVars:  []string{"GITHUB_APP_ID"},
+						Usage:    "GitHub App id",
+						EnvVars:  []string{"GHAPP_ID", "GITHUB_APP_ID"},
 						Required: true,
 					},
 					&cli.StringFlag{
-						Name:     "installation-id",
-						Usage:    "GitHub app installation-id",
-						EnvVars:  []string{"GITHUB_APP_INSTALLATION_ID"},
+						Name:     "install-id",
+						Usage:    "GitHub App installation id",
+						EnvVars:  []string{"GHAPP_INSTALL_ID", "GITHUB_APP_INSTALL_ID"},
 						Required: true,
 					},
 					&cli.StringFlag{
-						Name:        "private-key",
-						Usage:       "GitHub app private-key",
-						EnvVars:     []string{"GITHUB_APP_PRIVATE_KEY"},
-						FilePath:    ".github-app-private-key.pem",
-						DefaultText: ".github-app-private-key.pem",
-						Required:    true,
+						Name:    "private-key",
+						Usage:   "GitHub App private key",
+						EnvVars: []string{"GHAPP_PRIVATE_KEY", "GITHUB_APP_PRIVATE_KEY"},
+					},
+					&cli.StringFlag{
+						Name:    "private-key-file",
+						Usage:   "GitHub App private key file like .ghapp-private-key.pem",
+						EnvVars: []string{"GHAPP_PRIVATE_KEY_FILE", "GITHUB_APP_PRIVATE_KEY_FILE"},
 					},
 				},
 				Action: func(ctx *cli.Context) error {
+					if !ctx.IsSet("private-key") {
+						if !ctx.IsSet("private-key-file") {
+							return fmt.Errorf("private-key or private-key-file not set")
+						}
+						privateKeyFile := ctx.String("private-key-file")
+						privateKeyBytes, err := os.ReadFile(privateKeyFile)
+						if err != nil {
+							return err
+						}
+						err = ctx.Set("private-key", string(privateKeyBytes))
+						if err != nil {
+							return err
+						}
+					}
 					id := ctx.String("id")
-					installationId := ctx.String("installation-id")
+					installId := ctx.String("install-id")
 					privateKey := ctx.String("private-key")
 					token, err := cmd.CreateToken(id, privateKey)
 					if err != nil {
 						return err
 					}
-					installationToken, err := cmd.CreateInstallationToken(installationId, token)
+					installationToken, err := cmd.CreateInstallationToken(installId, token)
 					if err != nil {
 						return err
 					}
@@ -72,7 +88,8 @@ func main() {
 	}
 	sort.Sort(cli.FlagsByName(app.Flags))
 	sort.Sort(cli.CommandsByName(app.Commands))
-	if err := app.Run(os.Args); err != nil {
+	err := app.Run(os.Args)
+	if err != nil {
 		fmt.Print(err)
 		os.Exit(1)
 	}
