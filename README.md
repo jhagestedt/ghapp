@@ -1,28 +1,28 @@
-# ghapp
-
-[![ci](https://github.com/jhagestedt/ghapp/actions/workflows/ci.yml/badge.svg)](https://github.com/jhagestedt/ghapp/actions/workflows/ci.yml)
+# `ghapp --help`
 
 Lightweight `CLI` to create GitHub installation tokens for GitHub Apps.
 
-## Install
+[![ci](https://github.com/jhagestedt/ghapp/actions/workflows/ci.yml/badge.svg)](https://github.com/jhagestedt/ghapp/actions/workflows/ci.yml)
+
+## 🚀 Install
 
 The packaged binaries of `ghapp` can be found on the [releases](https://github.com/jhagestedt/ghapp/releases) of this repository.
 
-### Linux
+### 🐧 Linux
 
 ```bash
 curl -L "https://github.com/jhagestedt/ghapp/releases/latest/download/ghapp_linux_amd64" \
 -o ./ghapp && chmod +x ./ghapp
 ```
 
-### MacOS
+### 🍏 MacOS
 
 ```bash
 curl -L "https://github.com/jhagestedt/ghapp/releases/latest/download/ghapp_darwin_amd64" \
 -o ./ghapp && chmod +x ./ghapp
 ```
 
-## Usage
+## 🧑‍💻 Usage
 
 A GitHub App installation token can be created by the GitHub App id, the installation id and the private key like described in the [docs](https://docs.github.com/en/developers/apps/building-github-apps/authenticating-with-github-apps).
 
@@ -56,7 +56,7 @@ A usage on GitHub Actions could look like the following.
     GHAPP_PRIVATE_KEY: ${{ secrets.GHAPP_PRIVATE_KEY }}
 ```
 
-## Docker
+## 🐳 Docker
 
 There is also a docker container published at [Dockerhub](https://hub.docker.com/repository/docker/jhagestedt/ghapp) that contains the binary that can be used with `docker run` to not install it locally.
 
