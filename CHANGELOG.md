@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/jhagestedt/ghapp/compare/1.1.2...1.1.3) (2022-09-13)
+
+
+### Bug Fixes
+
+* application usage description ([af93708](https://github.com/jhagestedt/ghapp/commit/af93708428cb7f40f4ab38828628e6f2d9e4a396))
+
 ## [1.1.2](https://github.com/jhagestedt/ghapp/compare/1.1.1...1.1.2) (2022-09-12)
 
 
