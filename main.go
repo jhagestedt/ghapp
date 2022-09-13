@@ -23,7 +23,7 @@ func main() {
 	}
 	app := &cli.App{
 		Name:    "ghapp",
-		Usage:   "GitHub app cli",
+		Usage:   "GitHub App CLI",
 		Version: version,
 		Commands: []*cli.Command{
 			{

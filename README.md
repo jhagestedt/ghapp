@@ -2,20 +2,30 @@
 
 Lightweight `CLI` to create GitHub installation tokens for GitHub Apps.
 
-[![ci](https://github.com/jhagestedt/ghapp/actions/workflows/ci.yml/badge.svg)](https://github.com/jhagestedt/ghapp/actions/workflows/ci.yml)
+```
+NAME:
+   ghapp - GitHub App CLI
+
+USAGE:
+   ghapp [global options] command [command options] [arguments...]
+
+COMMANDS:
+   token, t  Create a GitHub App installation token
+   help, h   Shows a list of commands or help for one command
+```
 
 ## 🚀 Install
 
 The packaged binaries of `ghapp` can be found on the [releases](https://github.com/jhagestedt/ghapp/releases) of this repository.
 
-### 🐧 Linux
+#### 🐧 Linux
 
 ```bash
 curl -L "https://github.com/jhagestedt/ghapp/releases/latest/download/ghapp_linux_amd64" \
 -o ./ghapp && chmod +x ./ghapp
 ```
 
-### 🍏 MacOS
+#### 🍏 MacOS
 
 ```bash
 curl -L "https://github.com/jhagestedt/ghapp/releases/latest/download/ghapp_darwin_amd64" \
