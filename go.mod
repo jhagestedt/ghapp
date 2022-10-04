@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/golang-jwt/jwt/v4 v4.4.2
-	github.com/urfave/cli/v2 v2.16.3
+	github.com/urfave/cli/v2 v2.17.1
 )
 
 require (
